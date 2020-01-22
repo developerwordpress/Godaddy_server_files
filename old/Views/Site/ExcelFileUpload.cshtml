@@ -1,0 +1,16 @@
+<div class="option-text" style="padding-right:0px;">
+    <p class="text-size">Ready to start a new title search? </p>
+    <span class="text-size2">Upload your .csv containing property information</span>
+    @using (Ajax.BeginForm("ExcelFileUpload", "Site", new { }, new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBegin", OnFailure = "OnFailure", OnSuccess = "OnSuccess", OnComplete = "OnComplete" }, new { @enctype = "multipart/form-data", @id = "form_upload" }))
+    {
+        <div class="ipat-darg-box">
+            <input type="file" name="UploadFile" id="UploadFile" accept="application/vnd.ms-excel" style="display:none;" />
+            <input type="hidden" name="FileName" id="FileName" />
+            <input type="text" id="btn_file" class="form-control inpt-drag" placeholder="Select file or drag & drop"><i class="fa fa-upload" aria-hidden="true"></i>
+        </div>
+        <div class="upload-downkoad"><a href="#" id="btn_file_upload" class="aside-btn">upload</a>
+		<a class="dow-exl-span" href="@Url.Action("DownloadExcelFormat","Site")">Download Sample Spreadsheet<br>View instructions</a>
+		</div>
+    }
+</div>
+

@@ -1,0 +1,24 @@
+﻿@model List<TitleLeader.Models.OrderItem.OrderResponse>
+
+<table id="table-order" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Order Number</th>
+            <th>Item Number</th>
+            <th>Response</th>
+            <th>Response Code</th>
+           
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderNumber</td>
+                <td>@item.ItemNumber</td>
+                <td>@item.Response</td>
+                <td>@item.ResponseCode</td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

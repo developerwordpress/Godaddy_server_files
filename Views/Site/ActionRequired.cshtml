@@ -1,0 +1,867 @@
+﻿@model List<TitleLeader.Models.Dataupload.DatauploadSave>
+@{
+    ViewBag.Title = "ActionRequired";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    Int32 fillteroption = ViewBag.FillterOption != null ? Convert.ToInt32(ViewBag.FillterOption) : 0;
+}
+<style>
+    .table-responsive tr td:first-child:before {
+        width: 7px;
+        height: 100vh;
+        background: #f67538 !important;
+        position: absolute;
+        content: "";
+        overflow: hidden;
+        clear: both;
+        left: 0;
+        top: 0;
+    }
+
+    .ttt {
+        padding: 10px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #fff;
+        background: #fff !important;
+    }
+</style>
+<div class="padding-box">
+    <div class="open-cart-text-box open-cart-text-box-reserch">
+        <h3 class="haeding-text-gry"> Action required</h3>
+        <p>Here you can view all searches that could NOT be completed due to either incomplete or inaccurate information provided on the order, or because the abstractor requires clarification from you before being able to resume the search.Depending upon when the abstractor was able to identify the existence of incomplete or inaccurate information, the search charge may be full, partial or none at all.</p>
+
+        @using (Html.BeginForm("ActionRequired", "Site", FormMethod.Post, new { @id = "form-search" }))
+        {
+            <div class="row">
+                <div class="col-sm-6 text-srch">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btn-search" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                        <input id="txtkey" type="text" class="form-control" value="@ViewBag.search" name="txtkey" placeholder="Search notifications">
+
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-sm-3 text-right">
+                    <select class="form-control" id="ddlFillter" name="fillter">
+                        @switch (fillteroption)
+                        {
+                            case 0:
+                                <option value="0" selected="selected">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Batch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 1:
+                                <option value="0">Date</option>
+                                <option value="1" selected="selected">Order Number</option>
+                                <option value="2">Batch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 2:
+                                <option value="0">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2" selected="selected">Batch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 3:
+                                <option value="0" selected="selected">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Batch Number</option>
+                                <option value="3" selected="selected">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 4:
+                                <option value="0" selected="selected">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Batch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4" selected="selected">Address</option>
+                                break;
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+         <div class="table-responsive table-responsive-no-before">
+            @if (ViewBag.msg != "")
+            {
+                <div class="alert alert-warning alert-dismissible">
+                    <strong>Info!</strong> Searched data not found!!!.
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-sm-12 tble-btn">
+               
+                <input type="button" id="btnSaveForLater" class="aside-btn btn btn-primary" value="Email All Selected" />
+           <input type="button" id="btnSubmitOrderNow" class="aside-btn btn btn-primary" value="Submit Order Now" />
+           </div>
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="table-order-con">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="chk-select-header"></label>
+                            </div>
+                        </th>
+                        <th>Order #</th>
+                        <th>Search #</th>
+                        <th>Address</th>
+                        <th>Unit</th>
+                        <th>City</th>
+                         <th>State</th>
+                        <th>County</th>
+                        <th>Zip</th>
+                        <th> &nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model)
+                    {
+                        <tr>
+                            <td class="ttt">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" class="chk-select"></label>
+                                </div>
+                            </td>
+                            <td class="ttt">@obj.order_no</td>
+                             <td class="ttt">@obj.item_no</td>
+                            <td class="ttt">@obj.street_add</td>
+                            <td class="ttt">@obj.house_unit</td>
+                            <td class="ttt">@obj.city</td>
+                            <td class="ttt">@obj.state</td>
+                            <td class="ttt">@obj.county</td>
+                            <td class="ttt">@obj.zip_code</td>
+                          
+                            <td class="ttt"><a type="button" style="cursor:pointer" data-container="body" data-toggle="popover" data-html="true" data-placement="top" data-content='<ul class="nav"><li><a href="#" orderid="@obj.order_no" itemid="@obj.item_no"  streetadd="@obj.street_add"  houseunit="@obj.house_unit"  city="@obj.city"  state="@obj.state"  county="@obj.county"  zipcode="@obj.zip_code" class="btnedit"><i class="fa fa-pencil"></i> Edit</li><li><a  href="#" orderid="@obj.order_no" itemid="@obj.item_no" class="btnaskquestion"><i class="fa fa-question"></i> Ask Question Report</li></ul>'><img class="img-icon" src="~/Content/images/dots.png"></a></td>
+                        </tr>
+                        <tr class="without-bg">
+                            <td colspan="9" style="background-color:#e4e7f2 !important;"></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+            <a href="#">&raquo;</a>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="content_block">
+
+    </div>
+</div>
+<div class="modal" id="myModal2" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Action Required</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="table-responsive" id="placeholder2">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+        </div>
+    </div>
+
+    </div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Search</h4>
+               
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                @using (Ajax.BeginForm("Editsearch", "Home", new AjaxOptions { OnBegin = "OnBegin1", OnSuccess = "OnSuccess1", OnFailure = "OnFailure1", OnComplete = "OnComplete1" }, new {  enctype = "multipart/form-data" }))
+            {
+
+                   
+                <div class="row">
+                 <div class="col-md-3">
+                 <label >Order No</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_order_no" name="str_order_no" class="form-control"  placeholder="Order No..." disabled required />
+                        </div>
+                    </div>
+                    <br />
+ <div class="row">
+  <div class="col-md-3">
+                 <label >Item No</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_item_no" name="str_item_no" class="form-control"  placeholder="Item No..." disabled required />
+                        </div>
+                    </div>
+                    <br />
+
+                     <div class="row">
+                    <div class="col-md-3">
+                 <label >Street Address</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_street_addr" name="str_street_addr" class="form-control"  placeholder="Street Address..." required />
+                        </div>
+                    </div>
+                    <br />
+
+
+                     <div class="row">
+                      <div class="col-md-3">
+                 <label >House Unit</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_house_unit" name="str_house_unit" class="form-control"  placeholder="House Unit..." required />
+                        </div>
+                    </div>
+                    <br />
+
+
+                     <div class="row">
+                     <div class="col-md-3">
+                 <label >City</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_city" name="str_city" class="form-control"  placeholder="City..." required />
+                        </div>
+                    </div>
+                    <br />
+
+
+
+                     <div class="row">
+                     <div class="col-md-3">
+                 <label >State</label>
+                     </div>
+                        <div class="col-md-9">
+                        <select id="str_state" name="str_state" class="form-control"  placeholder="Select State" onchange = "javascript:GetCounty(this.value);" required>
+                        </select>
+                            
+                        </div>
+                    </div>
+                    <br />
+
+
+                     <div class="row">
+                      <div class="col-md-3">
+                 <label >County</label>
+                     </div>
+                        <div class="col-md-9">
+                         <select id="str_county" name="str_county" class="form-control"  placeholder="Select County" required>
+                        </select>
+                          
+                        </div>
+                    </div>
+                    <br />
+
+
+                     <div class="row">
+                      <div class="col-md-3">
+                 <label >Zip Code</label>
+                     </div>
+                        <div class="col-md-9">
+                            <input type="text" id="str_zip_code" name="str_zip_code" pattern=".{5,5}" class="form-control"  placeholder="Zip Code..." required />
+                        </div>
+                    </div>
+                    <br />
+
+                        <br />
+                        <button class="btn btn-primary btn-sm text-center" id="btn-submit-order" type="submit" style="width:126px;">Save</button>
+                           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>      
+                        }
+                    </div>
+
+            <!-- Modal footer 
+            <div class="modal-footer">
+               
+            </div>
+             -->
+        </div>
+    </div>
+</div>
+@section footer
+{
+
+  <script src="~/Content/jquery-mask/jquery.mask.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetCounty(_stateId) {
+       
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#str_county").html(procemessage).show();
+        var url = "/Site/GetCountyByStateId/";
+       
+        $.ajax({
+            url: url,
+            data: { state: _stateId },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+              
+                var markup = "<option value='0'>Select County</option>";
+                for (var x = 0; x < data.length; x++) {
+                  
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#str_county").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+
+     function GetState() {
+      
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#str_state").html(procemessage).show();
+        var url = "/Site/GetAllState/";
+       
+        $.ajax({
+            url: url,
+            data: null,
+            cache: false,
+            type: "POST",
+            success: function (data) {
+              
+                var markup = "<option value='0'>Select State</option>";
+                for (var x = 0; x < data.length; x++) {
+                  
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#str_state").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+
+      function GetAllCounty() {
+      
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#str_county").html(procemessage).show();
+        var url = "/Site/GetAllCountyList/";
+       
+        $.ajax({
+            url: url,
+            data: null,
+            cache: false,
+            type: "POST",
+            success: function (data) {
+              
+                var markup = "<option value='0'>Select County</option>";
+                for (var x = 0; x < data.length; x++) {
+                  
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#str_county").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function () {
+         GetState();
+         GetAllCounty();
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+            $('[data-toggle="popover"]').popover();
+            var Begin = function (response) {
+            }
+            BeginFun = Begin;
+
+            var Success = function (response) {
+                if (response == "success") {
+                    $("#myModal").modal("hide");
+                    swal({
+                        title: "Success!",
+                        text: "Thank you for asking an quesion!",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                } else if (response != "error") {
+                    $("#myModal").modal("hide");
+                    swal({
+                        title: "Success!",
+                        text: "Your Details has been updated",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    }, function (isConfirm) {
+                        var url = '@Url.Action("ActionRequired", "Site")';
+                        window.location.href = url;
+                    });
+                }
+            }
+            SuccessFun = Success;
+
+            var Failure = function (response) {
+            }
+            FailureFun = Failure;
+
+            var Complete = function (response) {
+            }
+            CompleteFun = Complete;
+
+            $(document).on("click", ".btnaskquestion", function () {
+                $('[data-original-title]').popover('hide');
+                var order_no = $(this).attr("orderid");
+                var item_no = $(this).attr("itemid");
+                AskQuestion(order_no, item_no);
+                $("#myModal").modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            });
+
+            var AskQuestion = function (order_no, item_no) {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: '@Url.Action("AskQuestion", "Site")',
+                    data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                    contentType: "application/html; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#content_block").html(response);
+                        $.validator.unobtrusive.parse($("#content_block"));
+                    },
+                    failure: function (response) {
+                        alert("Error in Personal");
+                    },
+                    error: function (response) {
+                        alert("Error in Personal");
+                    },
+                    complete: function (response) {
+
+                    }
+                });
+            }
+
+            $("#chk-select-header").change(function () {
+                var headcheck = $(this).is(":checked");
+                $('#table-order-con>tbody>tr').each(function (i, n) {
+                    $(this).find('td:eq(0)').find(".chk-select").prop('checked', headcheck);
+                });
+
+            });
+
+            jQuery('.chk-select').on("click", function (e) {
+               
+                var order_no=0;
+                var item_no=0;
+                $('#table-order-con tr').find('input[type="checkbox"]:checked').each(function () {
+                
+                    var row = $(this).closest("tr")[0];
+                   
+                     order_no = row.cells[1].innerHTML;
+                     item_no = row.cells[2].innerHTML;
+                  
+                    
+                });
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: '@Url.Action("GetActionRequired", "Site")',
+                    data: { 'orderno': order_no, 'items':item_no },
+                    success: function (response) {
+                       
+                        $("#placeholder2").html(response);
+                        $("#myModal2").show();
+                    },
+                    error: function (response) {
+                        alert(JSON.stringify(response));
+                    },
+                    complete: function (response) {
+                       
+                    }
+                });
+            });
+
+
+
+
+            $(".close").click(function () {
+                var url = '@Url.Action("ActionRequired", "Site")';
+                window.location.href = url;
+            });
+
+
+            $("#btnSaveForLater").click(function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "To mail to selected order(s).",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary disabled",
+                    confirmButtonText: "Yes, Mail selected Order(s)!",
+                    showLoaderOnConfirm: false,
+                    closeOnConfirm: false
+                }, function () {
+                    var intArray = new Array();
+                    var count = 0;
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                        if (checktrue) {
+                            intArray[count] = $(this).find('td:eq(9)').text();
+                            count++;
+                        }
+                    });
+                    if (intArray.length > 0) {
+                    @*$("#btnSaveForLater").attr("disabled", "disabled");
+                    $("#btnSaveForLater").val("Please wait..");
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: '@Url.Action("ActionRequired", "Site")',
+                        data: '{ "OrderItemNos":' + JSON.stringify(intArray) + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != "error") {
+                                swal({
+                                    title: "Success!",
+                                    text: "Order has been saved as draft.",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    if (parseInt(response["count"]) > 0) {
+                                        var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response["orderno"];
+                                        window.location.href = url;
+                                    }
+                                    else {
+                                        var url = '@Url.Action("SaveForLater", "Site")';
+                                        window.location.href = url;
+                                    }
+                                });
+
+                            }
+                        },
+                        failure: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        error: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        complete: function () {
+                            $("#btnSaveForLater").removeAttr("disabled");
+                            $("#btnSaveForLater").val("Save order for later");
+                        }
+                    });*@
+                    }
+                });
+            });
+
+
+              $("#btnSubmitOrderNow").click(function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "To Submit to selected order(s).",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary disabled",
+                    confirmButtonText: "Yes, Submit selected Order(s)!",
+                    showLoaderOnConfirm: false,
+                    closeOnConfirm: false
+                }, function () {
+                
+                    var intArray = new Array();
+                    var count = 0;
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                        if (checktrue) {
+                        
+                            intArray[count] = $(this).find('td:eq(1)').text();
+                            count++;
+                        }
+                    });
+                    if (intArray.length > 0) {
+                  
+                    
+                    $("#btnSubmitOrderNow").val("Please wait..");
+                  
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: '@Url.Action("ActionRequiredSubmit", "Site")',
+                        data: '{ "OrderNo":' + JSON.stringify(intArray) + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != "error") {
+                                swal({
+                                    title: "Success!",
+                                    text: "Order has been submited.",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                               
+                                    if (response != null) {
+                                        var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response;
+                                        window.location.href = url;
+                                    }
+                                    else {
+                                        var url = '@Url.Action("ActionRequired", "Site")';
+                                        window.location.href = url;
+                                    }
+                                });
+
+                            }
+                        },
+                        failure: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        error: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        complete: function () {
+                            $("#btnSaveForLater").removeAttr("disabled");
+                            $("#btnSaveForLater").val("Save order for later");
+                        }
+                    });
+                    }
+                });
+            });
+
+            $(document).on("click", ".btnedit", function () {
+            
+                var order_no = $(this).attr("orderid");
+                var item_no = $(this).attr("itemid");
+                var street_add = $(this).attr("streetadd");
+                var house_unit = $(this).attr("houseunit");
+                var city = $(this).attr("city");
+                var state = $(this).attr("state");
+                var county = $(this).attr("county");
+                var zip_code = $(this).attr("zipcode");
+                 $("#str_order_no").val(order_no);
+                  $("#str_item_no").val(item_no);
+                   $("#str_street_addr").val(street_add);
+                  $("#str_house_unit").val(house_unit);
+                   $("#str_city").val(city);
+                  $("#str_state").val(state);
+                   $("#str_county").val(county);
+                  $("#str_zip_code").val(zip_code);
+                 $("#myModal1").modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            });
+
+             $("#btn-submit-order").click(function () {
+            var rows1 = [];
+                        rows1.push({
+                            "str_order_no": $("#str_order_no").val(),
+                            "str_item_no": $("#str_item_no").val(),
+                            "str_street_addr": $("#str_street_addr").val(),
+                            "str_house_unit":  $("#str_house_unit").val(),
+                            "str_city": $("#str_city").val(),
+                            "str_state": $("#str_state").val(),
+                            "str_county": $("#str_county").val(),
+                            "str_zip_code": $("#str_zip_code").val(),
+                            });
+                            
+                        function_submit(rows1);
+             });
+
+              var function_submit = function (form_data) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: '@Url.Action("Editsearch", "Site")',
+                    data: JSON.stringify(form_data),
+                    contentType: "application/json ; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != "error") {
+                            swal({
+                                title: "Success!",
+                                text: "Order has been updated successfully.",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("ActionRequired","Site")';
+                        window.location.href = url;
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        swal({
+                            title: "Error!",
+                            text: "Your session has been expiry please login",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            var url = '@Url.Action("Login", "Home")';
+                            window.location.href = url;
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            title: "Error!",
+                            text: "Your session has been expiry please login",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            var url = '@Url.Action("Login", "Home")';
+                            window.location.href = url;
+                        });
+                    }
+                });
+            }
+            var SaveForLetterFun = function (order_no, item_no) {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: '@Url.Action("EditSaveForLatter", "Site")',
+                    data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                    contentType: "application/html; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#content_block").html(response);
+                        $.validator.unobtrusive.parse($("#content_block"));
+                    },
+                    failure: function (response) {
+                        alert("Error in Personal");
+                    },
+                    error: function (response) {
+                        alert("Error in Personal");
+                    },
+                    complete: function (response) {
+
+                    }
+                });
+            }
+        });
+        function OnBegin(response) {
+            BeginFun(response);
+        }
+        function OnSuccess(response) {
+            SuccessFun(response);
+        }
+        function OnFailure(response) {
+            FailureFun(response);
+        }
+        function OnComplete(response) {
+            CompleteFun(response);
+        }
+        /*================Save for Later End=============*/
+    </script>
+}
